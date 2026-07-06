@@ -1,0 +1,81 @@
+<div class="landing">
+  <section class="hero" [style.background-image]="heroBackground">
+    <div class="hero__content">
+      <h1 class="hero__name">{{ tenant.name }}</h1>
+      <div class="hero__rating">
+        <span class="material-icons-round" *ngFor="let filled of stars">{{ filled ? 'star' : 'star_border' }}</span>
+        <span class="hero__rating-value">{{ tenant.rating }}</span>
+      </div>
+      <p class="hero__welcome">Bienvenido</p>
+      <button class="btn btn-primary hero__cta" (click)="reservar()">Reservar Mesa</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__header">
+      <h2>Nuestra Carta</h2>
+      <a routerLink="/carta">Ver carta completa</a>
+    </div>
+    <div class="dish-grid">
+      <div class="dish-card" *ngFor="let plato of cartaPreview">
+        <h3>{{ plato.nombre }}</h3>
+        <p>{{ plato.descripcion }}</p>
+        <span class="dish-card__price">{{ plato.precio.toFixed(2) }} €</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="section__header">
+      <h2>Menús Especiales</h2>
+    </div>
+    <div class="dish-grid">
+      <div class="dish-card" *ngFor="let menu of tenant.menusEspeciales">
+        <h3>{{ menu.nombre }}</h3>
+        <p>{{ menu.descripcion }}</p>
+        <span class="dish-card__price">{{ menu.precio.toFixed(2) }} €</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__header">
+      <h2>Galería</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item" *ngFor="let img of tenant.galleryImages" [style.background-image]="galleryBackground(img)"></div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="section__header">
+      <h2>Opiniones</h2>
+    </div>
+    <div class="review-grid">
+      <div class="review-card" *ngFor="let opinion of tenant.opiniones">
+        <div class="review-card__stars">
+          <span class="material-icons-round" *ngFor="let i of [0, 1, 2, 3, 4]">
+            {{ i < opinion.rating ? 'star' : 'star_border' }}
+          </span>
+        </div>
+        <p class="review-card__text">"{{ opinion.texto }}"</p>
+        <span class="review-card__author">{{ opinion.autor }}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__header">
+      <h2>Cómo llegar</h2>
+    </div>
+    <p class="address">
+      <span class="material-icons-round">place</span>
+      {{ tenant.direccion }}
+    </p>
+    <p class="address">
+      <span class="material-icons-round">call</span>
+      {{ tenant.telefonoContacto }}
+    </p>
+    <a class="btn btn-primary" [href]="mapsUrl" target="_blank" rel="noopener">Cómo llegar</a>
+  </section>
+</div>

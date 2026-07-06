@@ -1,0 +1,108 @@
+<div class="confirmation">
+  <ng-container [ngSwitch]="state">
+    <div *ngSwitchCase="'summary'" class="card">
+      <h1 class="card__title">Confirma tu reserva</h1>
+
+      <div class="summary__row">
+        <span class="material-icons-round">place</span>
+        <span>{{ zona?.descripcion }}</span>
+      </div>
+      <div class="summary__row">
+        <span class="material-icons-round">table_restaurant</span>
+        <span>{{ tipoMesa?.descripcion }}</span>
+      </div>
+      <div class="summary__row">
+        <span class="material-icons-round">event</span>
+        <span>{{ selectedDateLong }}</span>
+      </div>
+      <div class="summary__row">
+        <span class="material-icons-round">schedule</span>
+        <span>{{ slot?.horaInicio }}</span>
+      </div>
+
+      <ng-container *ngIf="needsGuestForm">
+        <p class="guest-form__intro">Déjanos tus datos para confirmar la reserva a tu nombre.</p>
+
+        <label class="field-label" for="nombre">Nombre</label>
+        <input id="nombre" class="form-control" type="text" [(ngModel)]="guest.nombre" placeholder="Tu nombre" />
+
+        <label class="field-label" for="apellidos">Apellidos</label>
+        <input id="apellidos" class="form-control" type="text" [(ngModel)]="guest.apellidos" placeholder="Tus apellidos" />
+
+        <label class="field-label" for="email">Email</label>
+        <input id="email" class="form-control" type="email" [(ngModel)]="guest.email" placeholder="tu@email.com" />
+
+        <label class="field-label" for="telefono">Teléfono</label>
+        <input id="telefono" class="form-control" type="tel" [(ngModel)]="guest.telefono" placeholder="600 000 000" />
+
+        <p class="guest-form__login">
+          ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+        </p>
+      </ng-container>
+
+      <label class="field-label" for="obs">Observaciones / peticiones especiales</label>
+      <textarea
+        id="obs"
+        class="form-control"
+        rows="3"
+        [(ngModel)]="observaciones"
+        placeholder="Alergias, celebraciones, preferencias..."
+      ></textarea>
+
+      <p class="form-error" *ngIf="formError">{{ formError }}</p>
+
+      <button class="btn btn-primary btn-block" (click)="confirm()">Confirmar reserva</button>
+    </div>
+
+    <div *ngSwitchCase="'loading'" class="card card--center">
+      <div class="spinner-lg"></div>
+      <p>Confirmando tu reserva...</p>
+    </div>
+
+    <div *ngSwitchCase="'error'" class="card card--center">
+      <span class="material-icons-round card__icon card__icon--error">error_outline</span>
+      <p>No hemos podido confirmar tu reserva. Inténtalo de nuevo.</p>
+      <button class="btn btn-primary" (click)="retry()">Volver a intentar</button>
+    </div>
+
+    <div *ngSwitchCase="'success'" class="card card--center">
+      <span class="material-icons-round card__icon card__icon--success">check_circle</span>
+      <h2>¡Reserva confirmada!</h2>
+
+      <div class="summary__row">
+        <span class="material-icons-round">place</span>
+        <span>{{ zona?.descripcion }}</span>
+      </div>
+      <div class="summary__row">
+        <span class="material-icons-round">table_restaurant</span>
+        <span>{{ tipoMesa?.descripcion }}</span>
+      </div>
+      <div class="summary__row">
+        <span class="material-icons-round">event</span>
+        <span>{{ selectedDateShort }}</span>
+      </div>
+      <div class="summary__row">
+        <span class="material-icons-round">schedule</span>
+        <span>{{ slot?.horaInicio }}</span>
+      </div>
+
+      <img class="qr-code" *ngIf="qrDataUrl" [src]="qrDataUrl" alt="Código QR de la reserva" />
+
+      <div class="success-actions">
+        <button class="btn btn-outline" (click)="downloadIcs()">
+          <span class="material-icons-round">event_available</span>
+          Añadir al calendario
+        </button>
+        <button class="btn btn-outline" (click)="share()">
+          <span class="material-icons-round">share</span>
+          Compartir
+        </button>
+      </div>
+      <p class="share-copied" *ngIf="shareCopied">Copiado al portapapeles</p>
+
+      <p class="account-note">Ya puedes ver y gestionar esta reserva en <strong>Mis reservas</strong>.</p>
+
+      <button class="btn btn-primary btn-block" (click)="bookAnother()">Hacer otra reserva</button>
+    </div>
+  </ng-container>
+</div>

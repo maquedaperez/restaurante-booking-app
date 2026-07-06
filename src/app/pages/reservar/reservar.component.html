@@ -1,0 +1,183 @@
+<div class="reservar">
+  <button class="reservar__back" (click)="back()">
+    <span class="material-icons-round">arrow_back</span>
+    Volver
+  </button>
+
+  <div class="reservar__stepper">
+    <span class="step" [class.step--active]="step === 1">Personas</span>
+    <span class="step-divider"></span>
+    <span class="step" [class.step--active]="step === 2">Fecha</span>
+    <span class="step-divider"></span>
+    <span class="step" [class.step--active]="step === 3">Hora</span>
+    <span class="step-divider"></span>
+    <span class="step" [class.step--active]="step === 4">Zona</span>
+    <span class="step-divider"></span>
+    <span class="step" [class.step--active]="step === 5">Resumen</span>
+  </div>
+
+  <!-- Paso 1: Personas -->
+  <div class="party" *ngIf="step === 1">
+    <h1 class="reservar__title">¿Cuántas personas?</h1>
+    <div class="party__grid">
+      <button
+        class="party__chip"
+        *ngFor="let n of partyOptions"
+        [class.party__chip--selected]="partySize === n && !showCustomParty"
+        (click)="selectPartySize(n)"
+      >
+        {{ n }}
+      </button>
+      <button
+        class="party__chip"
+        [class.party__chip--selected]="showCustomParty || partySize > 5"
+        (click)="toggleCustomParty()"
+      >
+        6+
+      </button>
+    </div>
+
+    <div class="party__custom" *ngIf="showCustomParty">
+      <label class="field-label" for="custom-party">¿Cuántos sois exactamente?</label>
+      <div class="party__custom-row">
+        <input
+          id="custom-party"
+          class="form-control"
+          type="number"
+          min="6"
+          max="60"
+          [(ngModel)]="customPartySize"
+        />
+        <button class="btn btn-primary" (click)="confirmCustomParty()">Continuar</button>
+      </div>
+      <p class="party__custom-hint">
+        Para grupos grandes confirmaremos la disponibilidad exacta al recibir tu reserva.
+      </p>
+    </div>
+  </div>
+
+  <!-- Paso 2: Fecha -->
+  <div class="calendar" *ngIf="step === 2">
+    <h1 class="reservar__title">¿Qué día?</h1>
+
+    <div class="reservar__loading" *ngIf="loading">
+      <div class="spinner-lg"></div>
+    </div>
+    <p class="reservar__error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <ng-container *ngIf="!loading && !errorMessage">
+      <div class="calendar__header">
+        <button class="calendar__nav" [disabled]="!canGoPrevMonth" (click)="prevMonth()">
+          <span class="material-icons-round">chevron_left</span>
+        </button>
+        <span class="calendar__month">{{ monthLabel }}</span>
+        <button class="calendar__nav" (click)="nextMonth()">
+          <span class="material-icons-round">chevron_right</span>
+        </button>
+      </div>
+
+      <div class="calendar__weekdays">
+        <span *ngFor="let wd of weekdays">{{ wd }}</span>
+      </div>
+
+      <div class="calendar__grid">
+        <button
+          *ngFor="let day of calendarDays"
+          class="calendar__day"
+          [class.calendar__day--muted]="!day.inMonth"
+          [class.calendar__day--disabled]="day.isPast || !day.hasAvailability"
+          [class.calendar__day--selected]="day.isoDate === selectedDate"
+          [disabled]="!day.inMonth || day.isPast || !day.hasAvailability"
+          (click)="selectDay(day)"
+        >
+          <span>{{ day.dayNumber }}</span>
+          <span class="calendar__dot" *ngIf="day.hasAvailability && day.inMonth && !day.isPast"></span>
+        </button>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Paso 3: Hora -->
+  <div class="time-step" *ngIf="step === 3">
+    <h1 class="reservar__title">¿A qué hora?</h1>
+    <p class="reservar__subtitle">{{ selectedDateLabel }}</p>
+
+    <div class="time-step__section" *ngIf="comidaSlots.length > 0">
+      <h3 class="time-step__label">Comida</h3>
+      <div class="time-step__grid">
+        <button
+          class="time-slot"
+          *ngFor="let slot of comidaSlots"
+          [class.time-slot--selected]="selectedSlot === slot"
+          (click)="selectSlot(slot)"
+        >
+          {{ slot.horaInicio }}
+        </button>
+      </div>
+    </div>
+
+    <div class="time-step__divider" *ngIf="comidaSlots.length > 0 && cenaSlots.length > 0"></div>
+
+    <div class="time-step__section" *ngIf="cenaSlots.length > 0">
+      <h3 class="time-step__label">Cena</h3>
+      <div class="time-step__grid">
+        <button
+          class="time-slot"
+          *ngFor="let slot of cenaSlots"
+          [class.time-slot--selected]="selectedSlot === slot"
+          (click)="selectSlot(slot)"
+        >
+          {{ slot.horaInicio }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paso 4: Zona -->
+  <div class="zonas" *ngIf="step === 4">
+    <h1 class="reservar__title">¿Dónde te sientas mejor?</h1>
+
+    <div class="reservar__loading" *ngIf="zonasLoading">
+      <div class="spinner-lg"></div>
+    </div>
+
+    <div class="zonas__grid" *ngIf="!zonasLoading">
+      <button
+        class="zona-card"
+        *ngFor="let zona of zonas"
+        [class.zona-card--selected]="selectedZona?.id === zona.id"
+        (click)="selectZona(zona)"
+      >
+        <span class="material-icons-round zona-card__icon">{{ iconFor(zona) }}</span>
+        <div>
+          <h3>{{ zona.descripcion }}</h3>
+          <p *ngIf="zona.descripcionLarga">{{ zona.descripcionLarga }}</p>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Paso 5: Resumen -->
+  <div class="summary" *ngIf="step === 5">
+    <h1 class="reservar__title">Resumen</h1>
+    <div class="summary__card">
+      <div class="summary__row">
+        <span class="material-icons-round">groups</span>
+        <span>{{ partySize }} {{ partySize === 1 ? 'persona' : 'personas' }}</span>
+      </div>
+      <div class="summary__row">
+        <span class="material-icons-round">event</span>
+        <span>{{ selectedDateLabel }}</span>
+      </div>
+      <div class="summary__row">
+        <span class="material-icons-round">schedule</span>
+        <span>{{ selectedSlot?.horaInicio }}</span>
+      </div>
+      <div class="summary__row">
+        <span class="material-icons-round">place</span>
+        <span>{{ selectedZona?.descripcion }}</span>
+      </div>
+      <button class="btn btn-primary btn-block" (click)="goToConfirmation()">Continuar</button>
+    </div>
+  </div>
+</div>

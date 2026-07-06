@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://webapiartibusiness-dvh6d7b8a7c9dsfr.westeurope-01.azurewebsites.net",
+    "secure": true,
+    "changeOrigin": true
+  }
+}
