@@ -1,13 +1,15 @@
 <div class="landing">
   <section class="hero" [style.background-image]="heroBackground">
-    <div class="hero__content">
-      <h1 class="hero__name">{{ tenant.name }}</h1>
-      <div class="hero__rating">
-        <span class="material-icons-round" *ngFor="let filled of stars">{{ filled ? 'star' : 'star_border' }}</span>
-        <span class="hero__rating-value">{{ tenant.rating }}</span>
+    <div class="hero__inner">
+      <div class="hero__content">
+        <h1 class="hero__name">{{ tenant.name }}</h1>
+        <div class="hero__rating">
+          <span class="material-icons-round" *ngFor="let filled of stars">{{ filled ? 'star' : 'star_border' }}</span>
+          <span class="hero__rating-value">{{ tenant.rating }}</span>
+        </div>
+        <p class="hero__welcome">Bienvenido</p>
+        <button class="btn btn-primary hero__cta" (click)="reservar()">Reservar Mesa</button>
       </div>
-      <p class="hero__welcome">Bienvenido</p>
-      <button class="btn btn-primary hero__cta" (click)="reservar()">Reservar Mesa</button>
     </div>
   </section>
 
@@ -43,9 +45,47 @@
       <h2>Galería</h2>
     </div>
     <div class="gallery-grid">
-      <div class="gallery-item" *ngFor="let img of tenant.galleryImages" [style.background-image]="galleryBackground(img)"></div>
+      <button
+        type="button"
+        class="gallery-item"
+        *ngFor="let img of tenant.galleryImages; index as i"
+        [style.background-image]="galleryBackground(img)"
+        (click)="openLightbox(i)"
+        [attr.aria-label]="'Ver foto ' + (i + 1) + ' ampliada'"
+      ></button>
     </div>
   </section>
+
+  <div class="lightbox" *ngIf="lightboxIndex !== null" (click)="closeLightbox()">
+    <button type="button" class="lightbox__close" (click)="closeLightbox()" aria-label="Cerrar">
+      <span class="material-icons-round">close</span>
+    </button>
+
+    <button
+      type="button"
+      class="lightbox__nav lightbox__nav--prev"
+      (click)="prevImage(); $event.stopPropagation()"
+      aria-label="Foto anterior"
+    >
+      <span class="material-icons-round">chevron_left</span>
+    </button>
+
+    <img
+      class="lightbox__image"
+      [src]="tenant.galleryImages[lightboxIndex!]"
+      [alt]="'Foto ' + (lightboxIndex! + 1) + ' de ' + tenant.name"
+      (click)="$event.stopPropagation()"
+    />
+
+    <button
+      type="button"
+      class="lightbox__nav lightbox__nav--next"
+      (click)="nextImage(); $event.stopPropagation()"
+      aria-label="Foto siguiente"
+    >
+      <span class="material-icons-round">chevron_right</span>
+    </button>
+  </div>
 
   <section class="section section--alt">
     <div class="section__header">
@@ -68,14 +108,33 @@
     <div class="section__header">
       <h2>Cómo llegar</h2>
     </div>
-    <p class="address">
-      <span class="material-icons-round">place</span>
-      {{ tenant.direccion }}
-    </p>
-    <p class="address">
-      <span class="material-icons-round">call</span>
-      {{ tenant.telefonoContacto }}
-    </p>
-    <a class="btn btn-primary" [href]="mapsUrl" target="_blank" rel="noopener">Cómo llegar</a>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p class="address">
+          <span class="material-icons-round">place</span>
+          {{ tenant.direccion }}
+        </p>
+        <p class="address">
+          <span class="material-icons-round">call</span>
+          {{ tenant.telefonoContacto }}
+        </p>
+        <p class="address">
+          <span class="material-icons-round">language</span>
+          {{ tenant.website }}
+        </p>
+        <p class="address">
+          <span class="material-icons-round">chat</span>
+          <a class="address__link" [href]="whatsappUrl" target="_blank" rel="noopener">WhatsApp</a>
+        </p>
+        <a class="btn btn-primary" [href]="mapsUrl" target="_blank" rel="noopener">Cómo llegar</a>
+      </div>
+      <iframe
+        class="contact-map"
+        [src]="mapsEmbedUrl"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Mapa de ubicación"
+      ></iframe>
+    </div>
   </section>
 </div>

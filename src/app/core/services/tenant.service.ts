@@ -23,6 +23,8 @@ const TENANTS: Record<string, TenantConfig> = {
     rating: 4.7,
     direccion: 'Calle Mayor 12, Madrid',
     telefonoContacto: '910 000 000',
+    whatsapp: '+34 600 123 456',
+    website: 'casamanolo.com',
     carta: [
       {
         categoria: 'Entrantes',

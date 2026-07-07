@@ -116,4 +116,6 @@ export interface TenantConfig {
   rating: number;
   direccion: string;
   telefonoContacto: string;
+  whatsapp: string;
+  website: string;
 }

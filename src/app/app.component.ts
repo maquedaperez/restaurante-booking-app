@@ -19,10 +19,11 @@ import { BottomNavComponent } from './shared/components/bottom-nav/bottom-nav.co
     `
       .app-shell {
         min-height: 100vh;
+        padding-bottom: 64px;
       }
-      @media (max-width: 720px) {
+      @media (min-width: 900px) {
         .app-shell {
-          padding-bottom: 64px;
+          padding-bottom: 56px;
         }
       }
     `

@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { TenantService } from '../../core/services/tenant.service';
 
@@ -13,8 +14,38 @@ import { TenantService } from '../../core/services/tenant.service';
 export class LandingComponent {
   private tenantService = inject(TenantService);
   private router = inject(Router);
+  private sanitizer = inject(DomSanitizer);
 
   tenant = this.tenantService.tenant;
+
+  lightboxIndex: number | null = null;
+
+  @HostListener('window:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    if (this.lightboxIndex === null) return;
+    if (event.key === 'Escape') this.closeLightbox();
+    if (event.key === 'ArrowRight') this.nextImage();
+    if (event.key === 'ArrowLeft') this.prevImage();
+  }
+
+  openLightbox(index: number): void {
+    this.lightboxIndex = index;
+  }
+
+  closeLightbox(): void {
+    this.lightboxIndex = null;
+  }
+
+  nextImage(): void {
+    if (this.lightboxIndex === null) return;
+    this.lightboxIndex = (this.lightboxIndex + 1) % this.tenant.galleryImages.length;
+  }
+
+  prevImage(): void {
+    if (this.lightboxIndex === null) return;
+    const length = this.tenant.galleryImages.length;
+    this.lightboxIndex = (this.lightboxIndex - 1 + length) % length;
+  }
 
   get stars(): boolean[] {
     return Array.from({ length: 5 }, (_, i) => i < Math.round(this.tenant.rating));
@@ -26,6 +57,16 @@ export class LandingComponent {
 
   get mapsUrl(): string {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(this.tenant.direccion)}`;
+  }
+
+  get mapsEmbedUrl(): SafeResourceUrl {
+    const url = `https://www.google.com/maps?q=${encodeURIComponent(this.tenant.direccion)}&output=embed`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  get whatsappUrl(): string {
+    const digits = this.tenant.whatsapp.replace(/\D/g, '');
+    return `https://wa.me/${digits}`;
   }
 
   get heroBackground(): string {

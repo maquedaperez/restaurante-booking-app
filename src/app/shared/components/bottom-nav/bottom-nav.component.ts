@@ -43,20 +43,15 @@ import { AuthService } from '../../../core/services/auth.service';
   styles: [
     `
       .bottom-nav {
-        display: none;
-      }
-      @media (max-width: 720px) {
-        .bottom-nav {
-          display: flex;
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          background: var(--color-bg-card);
-          box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.08);
-          z-index: 20;
-          padding-bottom: env(safe-area-inset-bottom, 0);
-        }
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--color-bg-card);
+        box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.08);
+        z-index: 20;
+        padding-bottom: env(safe-area-inset-bottom, 0);
       }
       .bottom-nav__item {
         flex: 1;
@@ -71,6 +66,19 @@ import { AuthService } from '../../../core/services/auth.service';
 
         .material-icons-round {
           font-size: 22px;
+        }
+      }
+      @media (min-width: 900px) {
+        .bottom-nav__item {
+          flex-direction: row;
+          gap: 8px;
+          padding: 16px 4px;
+          font-size: 0.82rem;
+          font-weight: 500;
+
+          .material-icons-round {
+            font-size: 20px;
+          }
         }
       }
       .bottom-nav__item--active {
