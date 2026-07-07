@@ -7,11 +7,11 @@
   <div class="reservar__stepper">
     <span class="step" [class.step--active]="step === 1">Personas</span>
     <span class="step-divider"></span>
-    <span class="step" [class.step--active]="step === 2">Fecha</span>
+    <span class="step" [class.step--active]="step === 2">Zona</span>
     <span class="step-divider"></span>
-    <span class="step" [class.step--active]="step === 3">Hora</span>
+    <span class="step" [class.step--active]="step === 3">Fecha</span>
     <span class="step-divider"></span>
-    <span class="step" [class.step--active]="step === 4">Zona</span>
+    <span class="step" [class.step--active]="step === 4">Hora</span>
     <span class="step-divider"></span>
     <span class="step" [class.step--active]="step === 5">Resumen</span>
   </div>
@@ -56,8 +56,32 @@
     </div>
   </div>
 
-  <!-- Paso 2: Fecha -->
-  <div class="calendar" *ngIf="step === 2">
+  <!-- Paso 2: Zona -->
+  <div class="zonas" *ngIf="step === 2">
+    <h1 class="reservar__title">¿Dónde te sientas mejor?</h1>
+
+    <div class="reservar__loading" *ngIf="zonasLoading">
+      <div class="spinner-lg"></div>
+    </div>
+
+    <div class="zonas__grid" *ngIf="!zonasLoading">
+      <button
+        class="zona-card"
+        *ngFor="let zona of zonas"
+        [class.zona-card--selected]="selectedZona?.id === zona.id"
+        (click)="selectZona(zona)"
+      >
+        <span class="material-icons-round zona-card__icon">{{ iconFor(zona) }}</span>
+        <div>
+          <h3>{{ zona.descripcion }}</h3>
+          <p *ngIf="zona.descripcionLarga">{{ zona.descripcionLarga }}</p>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Paso 3: Fecha -->
+  <div class="calendar" *ngIf="step === 3">
     <h1 class="reservar__title">¿Qué día?</h1>
 
     <div class="reservar__loading" *ngIf="loading">
@@ -97,8 +121,8 @@
     </ng-container>
   </div>
 
-  <!-- Paso 3: Hora -->
-  <div class="time-step" *ngIf="step === 3">
+  <!-- Paso 4: Hora -->
+  <div class="time-step" *ngIf="step === 4">
     <h1 class="reservar__title">¿A qué hora?</h1>
     <p class="reservar__subtitle">{{ selectedDateLabel }}</p>
 
@@ -133,30 +157,6 @@
     </div>
   </div>
 
-  <!-- Paso 4: Zona -->
-  <div class="zonas" *ngIf="step === 4">
-    <h1 class="reservar__title">¿Dónde te sientas mejor?</h1>
-
-    <div class="reservar__loading" *ngIf="zonasLoading">
-      <div class="spinner-lg"></div>
-    </div>
-
-    <div class="zonas__grid" *ngIf="!zonasLoading">
-      <button
-        class="zona-card"
-        *ngFor="let zona of zonas"
-        [class.zona-card--selected]="selectedZona?.id === zona.id"
-        (click)="selectZona(zona)"
-      >
-        <span class="material-icons-round zona-card__icon">{{ iconFor(zona) }}</span>
-        <div>
-          <h3>{{ zona.descripcion }}</h3>
-          <p *ngIf="zona.descripcionLarga">{{ zona.descripcionLarga }}</p>
-        </div>
-      </button>
-    </div>
-  </div>
-
   <!-- Paso 5: Resumen -->
   <div class="summary" *ngIf="step === 5">
     <h1 class="reservar__title">Resumen</h1>
@@ -166,16 +166,16 @@
         <span>{{ partySize }} {{ partySize === 1 ? 'persona' : 'personas' }}</span>
       </div>
       <div class="summary__row">
+        <span class="material-icons-round">place</span>
+        <span>{{ selectedZona?.descripcion }}</span>
+      </div>
+      <div class="summary__row">
         <span class="material-icons-round">event</span>
         <span>{{ selectedDateLabel }}</span>
       </div>
       <div class="summary__row">
         <span class="material-icons-round">schedule</span>
         <span>{{ selectedSlot?.horaInicio }}</span>
-      </div>
-      <div class="summary__row">
-        <span class="material-icons-round">place</span>
-        <span>{{ selectedZona?.descripcion }}</span>
       </div>
       <button class="btn btn-primary btn-block" (click)="goToConfirmation()">Continuar</button>
     </div>

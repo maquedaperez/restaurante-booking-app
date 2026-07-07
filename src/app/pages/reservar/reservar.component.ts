@@ -112,7 +112,7 @@ export class ReservarComponent implements OnInit {
 
   ngOnInit(): void {
     this.partySize = this.reservationService.getSelectedPartySize() || 2;
-    this.loadMonth(this.viewMonth);
+    this.loadZonas();
   }
 
   private stripTime(date: Date): Date {
@@ -232,15 +232,14 @@ export class ReservarComponent implements OnInit {
     );
     this.selectedSlot = null;
     this.reservationService.selectDate(day.isoDate);
-    this.step = 3;
+    this.step = 4;
   }
 
   selectSlot(slot: DisponibilidadSlot): void {
     this.selectedSlot = slot;
     this.reservationService.selectSlot(slot);
     this.reservationService.selectTime(slot.horaInicio);
-    this.loadZonas();
-    this.step = 4;
+    this.step = 5;
   }
 
   private loadZonas(): void {
@@ -262,7 +261,8 @@ export class ReservarComponent implements OnInit {
     this.reservationService.selectZona(zona);
     const mesa = autoAssignMesa(zona.id, this.partySize);
     this.reservationService.selectTipoMesa(mesa);
-    this.step = 5;
+    this.step = 3;
+    this.loadMonth(this.viewMonth);
   }
 
   goToConfirmation(): void {
