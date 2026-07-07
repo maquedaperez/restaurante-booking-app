@@ -284,6 +284,9 @@
   .material-icons-round {
     color: var(--color-primary);
     font-size: 20px;
+    width: 20px;
+    flex-shrink: 0;
+    text-align: center;
   }
 }
 
