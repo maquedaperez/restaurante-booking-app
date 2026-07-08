@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import {
@@ -134,9 +134,12 @@ export class ReservationService {
   }
 
   saveReserva(request: ConfirmReservaRequest): Observable<{ idCalendarioCita: number; duracion: number }> {
-    if (environment.useMockData && this.selectedZona && this.selectedTipoMesa && this.selectedSlot && this.selectedDate) {
-      const result = mockSaveReserva(request, this.selectedZona, this.selectedTipoMesa, this.selectedSlot, this.selectedDate);
-      return of(result).pipe(delay(500));
+    if (environment.useMockData) {
+      if (this.selectedZona && this.selectedTipoMesa && this.selectedSlot && this.selectedDate) {
+        const result = mockSaveReserva(request, this.selectedZona, this.selectedTipoMesa, this.selectedSlot, this.selectedDate);
+        return of(result).pipe(delay(500));
+      }
+      return throwError(() => new Error('Faltan datos de la reserva en curso.'));
     }
     return this.http.post<{ idCalendarioCita: number; duracion: number }>(
       `${this.base}/ClienteUsuario/InsertMeeting`,

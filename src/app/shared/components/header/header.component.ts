@@ -45,7 +45,7 @@ import { ReservationService } from '../../../core/services/reservation.service';
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 24px;
+        padding: 8px 20px;
         background: var(--color-bg-card);
         box-shadow: var(--shadow-sm);
         position: sticky;
@@ -55,20 +55,20 @@ import { ReservationService } from '../../../core/services/reservation.service';
       .header__brand {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         text-decoration: none;
         color: var(--color-text);
       }
       .header__logo {
-        width: 36px;
-        height: 36px;
+        width: 26px;
+        height: 26px;
         object-fit: contain;
         border-radius: var(--radius-sm);
       }
       .header__name {
         font-family: var(--font-display);
-        font-weight: 700;
-        font-size: 1.1rem;
+        font-weight: 600;
+        font-size: 0.92rem;
       }
       .header__nav {
         display: flex;

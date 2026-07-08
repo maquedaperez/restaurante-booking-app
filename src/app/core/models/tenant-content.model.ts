@@ -2,10 +2,14 @@ export interface PlatoCarta {
   nombre: string;
   descripcion: string;
   precio: number;
+  imagen?: string;
+  tags?: string[];
 }
 
 export interface CategoriaCarta {
   categoria: string;
+  imagen?: string;
+  unidad?: string;
   platos: PlatoCarta[];
 }
 

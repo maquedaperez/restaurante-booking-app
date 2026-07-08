@@ -13,27 +13,33 @@ import { AuthService } from '../../../core/services/auth.service';
         <span class="material-icons-round">home</span>
         <span>Inicio</span>
       </a>
-      <a
-        class="bottom-nav__item"
-        [routerLink]="(auth.currentUser$ | async) ? '/my-reservations' : '/reservar'"
-        routerLinkActive="bottom-nav__item--active"
-      >
-        <span class="material-icons-round">event_note</span>
-        <span>{{ (auth.currentUser$ | async) ? 'Mis Reservas' : 'Reservas' }}</span>
-      </a>
-      <a class="bottom-nav__item" routerLink="/carta" routerLinkActive="bottom-nav__item--active">
-        <span class="material-icons-round">restaurant_menu</span>
-        <span>Carta</span>
-      </a>
-      <a
-        class="bottom-nav__item"
-        *ngIf="auth.currentUser$ | async"
-        routerLink="/eventos"
-        routerLinkActive="bottom-nav__item--active"
-      >
-        <span class="material-icons-round">celebration</span>
-        <span>Eventos</span>
-      </a>
+
+      <ng-container *ngIf="auth.currentUser$ | async; else guestNav">
+        <a class="bottom-nav__item" routerLink="/my-reservations" routerLinkActive="bottom-nav__item--active">
+          <span class="material-icons-round">event_note</span>
+          <span>Mis Reservas</span>
+        </a>
+        <a class="bottom-nav__item" routerLink="/carta" routerLinkActive="bottom-nav__item--active">
+          <span class="material-icons-round">restaurant_menu</span>
+          <span>Carta</span>
+        </a>
+        <a class="bottom-nav__item" routerLink="/eventos" routerLinkActive="bottom-nav__item--active">
+          <span class="material-icons-round">celebration</span>
+          <span>Eventos</span>
+        </a>
+      </ng-container>
+
+      <ng-template #guestNav>
+        <a class="bottom-nav__item" routerLink="/reservar" routerLinkActive="bottom-nav__item--active">
+          <span class="material-icons-round">event_note</span>
+          <span>Reservas</span>
+        </a>
+        <a class="bottom-nav__item" routerLink="/carta" routerLinkActive="bottom-nav__item--active">
+          <span class="material-icons-round">restaurant_menu</span>
+          <span>Carta</span>
+        </a>
+      </ng-template>
+
       <a class="bottom-nav__item" routerLink="/profile" routerLinkActive="bottom-nav__item--active">
         <span class="material-icons-round">person</span>
         <span>Perfil</span>
@@ -82,7 +88,8 @@ import { AuthService } from '../../../core/services/auth.service';
         }
       }
       .bottom-nav__item--active {
-        color: var(--color-primary);
+        color: var(--color-primary-dark);
+        font-weight: 700;
       }
     `
   ]

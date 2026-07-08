@@ -114,6 +114,9 @@ export interface TenantConfig {
   opiniones: Opinion[];
   eventos: EventoRestaurante[];
   rating: number;
+  reviewCount: number;
+  tipoCocina: string;
+  horario: string;
   direccion: string;
   telefonoContacto: string;
   whatsapp: string;

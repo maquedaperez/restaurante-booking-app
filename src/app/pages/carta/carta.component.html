@@ -1,0 +1,50 @@
+<div class="carta">
+  <button class="carta__back" (click)="back()">
+    <span class="material-icons-round">arrow_back</span>
+    Volver
+  </button>
+
+  <h1 class="carta__title">Nuestra Carta</h1>
+
+  <section
+    class="menu-block"
+    *ngFor="let categoria of tenant.carta; let i = index"
+    [class.menu-block--reverse]="i % 2 === 1"
+  >
+    <div class="menu-block__list">
+      <div class="menu-block__header">
+        <span>{{ categoria.categoria }}</span>
+        <span class="menu-block__header-label">{{ categoria.unidad ?? 'Precio' }}</span>
+      </div>
+      <div class="menu-row" *ngFor="let plato of categoria.platos">
+        <div class="menu-row__thumb" *ngIf="plato.imagen" [style.background-image]="categoryImage(plato.imagen)"></div>
+        <div class="menu-row__info">
+          <h3>{{ plato.nombre }}</h3>
+          <p *ngIf="plato.descripcion">{{ plato.descripcion }}</p>
+          <div class="menu-row__tags" *ngIf="plato.tags?.length">
+            <span class="tag" *ngFor="let tag of plato.tags">{{ tag }}</span>
+          </div>
+        </div>
+        <span class="menu-row__price">{{ plato.precio.toFixed(2) }} €</span>
+      </div>
+    </div>
+    <div class="menu-block__image" [style.background-image]="categoryImage(categoria.imagen)"></div>
+  </section>
+
+  <section class="menu-block" [class.menu-block--reverse]="tenant.carta.length % 2 === 1">
+    <div class="menu-block__list">
+      <div class="menu-block__header">
+        <span>Menús Especiales</span>
+        <span class="menu-block__header-label">Precio</span>
+      </div>
+      <div class="menu-row" *ngFor="let menu of tenant.menusEspeciales">
+        <div>
+          <h3>{{ menu.nombre }}</h3>
+          <p>{{ menu.descripcion }}</p>
+        </div>
+        <span class="menu-row__price">{{ menu.precio.toFixed(2) }} €</span>
+      </div>
+    </div>
+    <div class="menu-block__image" [style.background-image]="categoryImage('assets/images/menu-especial.jpg')"></div>
+  </section>
+</div>

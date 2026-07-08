@@ -7,40 +7,59 @@
           <span class="material-icons-round" *ngFor="let filled of stars">{{ filled ? 'star' : 'star_border' }}</span>
           <span class="hero__rating-value">{{ tenant.rating }}</span>
         </div>
-        <p class="hero__welcome">Bienvenido</p>
-        <button class="btn btn-primary hero__cta" (click)="reservar()">Reservar Mesa</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section__header">
-      <h2>Nuestra Carta</h2>
-      <a routerLink="/carta">Ver carta completa</a>
-    </div>
-    <div class="dish-grid">
-      <div class="dish-card" *ngFor="let plato of cartaPreview">
-        <h3>{{ plato.nombre }}</h3>
-        <p>{{ plato.descripcion }}</p>
-        <span class="dish-card__price">{{ plato.precio.toFixed(2) }} €</span>
+        <p class="hero__reviews">{{ tenant.reviewCount | number }} reseñas</p>
+        <p class="hero__welcome">Sabores que invitan a volver.</p>
+        <div class="hero__actions">
+          <button class="btn btn-primary hero__cta" (click)="reservar()">Reservar Mesa</button>
+          <a class="btn hero__cta-secondary" routerLink="/carta">Ver Carta</a>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="section section--alt">
-    <div class="section__header">
-      <h2>Menús Especiales</h2>
-    </div>
-    <div class="dish-grid">
-      <div class="dish-card" *ngFor="let menu of tenant.menusEspeciales">
-        <h3>{{ menu.nombre }}</h3>
-        <p>{{ menu.descripcion }}</p>
-        <span class="dish-card__price">{{ menu.precio.toFixed(2) }} €</span>
+    <div class="review-featured">
+      <div class="review-card__stars">
+        <span class="material-icons-round" *ngFor="let i of [0, 1, 2, 3, 4]">
+          {{ i < featuredOpinion.rating ? 'star' : 'star_border' }}
+        </span>
       </div>
+      <p class="review-card__text">"{{ featuredOpinion.texto }}"</p>
+      <span class="review-card__author">{{ featuredOpinion.autor }}</span>
+    </div>
+    <div class="review-dots">
+      <button
+        type="button"
+        class="review-dot"
+        *ngFor="let opinion of tenant.opiniones; let i = index"
+        [class.review-dot--active]="i === reviewIndex"
+        (click)="goToReview(i)"
+        [attr.aria-label]="'Ver opinión ' + (i + 1)"
+      ></button>
     </div>
   </section>
 
   <section class="section">
+    <div class="section__header">
+      <h2>Platos destacados</h2>
+      <a routerLink="/carta">Explorar carta →</a>
+    </div>
+    <div class="featured-grid">
+      <div class="featured-card" *ngFor="let plato of cartaPreview">
+        <div class="featured-card__photo" [style.background-image]="galleryBackground(plato.imagen)"></div>
+        <div class="featured-card__body">
+          <h3>{{ plato.nombre }}</h3>
+          <p>{{ plato.descripcion }}</p>
+          <div class="dish-card__tags" *ngIf="plato.tags?.length">
+            <span class="tag" *ngFor="let tag of plato.tags">{{ tag }}</span>
+          </div>
+          <span class="dish-card__price">{{ plato.precio.toFixed(2) }} €</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
     <div class="section__header">
       <h2>Galería</h2>
     </div>
@@ -87,54 +106,68 @@
     </button>
   </div>
 
-  <section class="section section--alt">
+  <section class="section">
     <div class="section__header">
-      <h2>Opiniones</h2>
+      <h2>Menús Especiales</h2>
     </div>
-    <div class="review-grid">
-      <div class="review-card" *ngFor="let opinion of tenant.opiniones">
-        <div class="review-card__stars">
-          <span class="material-icons-round" *ngFor="let i of [0, 1, 2, 3, 4]">
-            {{ i < opinion.rating ? 'star' : 'star_border' }}
-          </span>
-        </div>
-        <p class="review-card__text">"{{ opinion.texto }}"</p>
-        <span class="review-card__author">{{ opinion.autor }}</span>
+    <div class="dish-grid">
+      <div class="dish-card" *ngFor="let menu of tenant.menusEspeciales">
+        <h3>{{ menu.nombre }}</h3>
+        <p>{{ menu.descripcion }}</p>
+        <span class="dish-card__price">{{ menu.precio.toFixed(2) }} €</span>
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="section__header">
-      <h2>Cómo llegar</h2>
-    </div>
-    <div class="contact-grid">
-      <div class="contact-info">
-        <p class="address">
-          <span class="material-icons-round">place</span>
-          {{ tenant.direccion }}
-        </p>
-        <p class="address">
-          <span class="material-icons-round">call</span>
-          {{ tenant.telefonoContacto }}
-        </p>
-        <p class="address">
-          <span class="material-icons-round">language</span>
-          {{ tenant.website }}
-        </p>
-        <p class="address">
-          <span class="material-icons-round">chat</span>
-          <a class="address__link" [href]="whatsappUrl" target="_blank" rel="noopener">WhatsApp</a>
-        </p>
-        <a class="btn btn-primary" [href]="mapsUrl" target="_blank" rel="noopener">Cómo llegar</a>
-      </div>
-      <iframe
-        class="contact-map"
-        [src]="mapsEmbedUrl"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        title="Mapa de ubicación"
-      ></iframe>
-    </div>
+  <section class="section map-section">
+    <iframe
+      class="contact-map"
+      [src]="mapsEmbedUrl"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Mapa de ubicación"
+    ></iframe>
   </section>
+
+  <section class="info-strip">
+    <span class="info-strip__item">
+      <span class="material-icons-round">place</span>
+      {{ tenant.direccion }}
+    </span>
+    <span class="info-strip__item">
+      <span class="material-icons-round">schedule</span>
+      {{ tenant.horario }}
+    </span>
+    <span class="info-strip__item">
+      <span class="material-icons-round">call</span>
+      {{ tenant.telefonoContacto }}
+    </span>
+  </section>
+
+  <footer class="landing-footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <img [src]="tenant.logoUrl" [alt]="tenant.name" class="footer__logo" />
+        <span>{{ tenant.name }}</span>
+      </div>
+      <div class="footer__contact">
+        <a [href]="whatsappUrl" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <span class="material-icons-round">chat</span>
+        </a>
+        <a [href]="'tel:' + tenant.telefonoContacto" aria-label="Llamar">
+          <span class="material-icons-round">call</span>
+        </a>
+        <a [href]="mapsUrl" target="_blank" rel="noopener" aria-label="Cómo llegar">
+          <span class="material-icons-round">place</span>
+        </a>
+        <a [href]="websiteUrl" target="_blank" rel="noopener" aria-label="Sitio web">
+          <span class="material-icons-round">language</span>
+        </a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© {{ currentYear }} {{ tenant.name }}</span>
+      <span>Powered by Artisoftware</span>
+    </div>
+  </footer>
 </div>

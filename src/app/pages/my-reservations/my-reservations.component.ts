@@ -300,7 +300,7 @@ import { formatDateShort } from '../../shared/utils/date-format';
       }
       .modify-slots__grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
         gap: 8px;
         margin-top: 12px;
       }
