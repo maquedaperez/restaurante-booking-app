@@ -150,6 +150,18 @@ import { formatDateShort } from '../../shared/utils/date-format';
       }
       .profile__section .form-control {
         margin-bottom: 14px;
+        box-sizing: border-box;
+        min-width: 0;
+      }
+      .profile__section input[type='date'].form-control {
+        padding: 10px 10px;
+        font-size: 0.85rem;
+      }
+      @media (max-width: 380px) {
+        .profile__section input[type='date'].form-control {
+          padding: 8px 6px;
+          font-size: 0.78rem;
+        }
       }
       .profile__section .btn-block {
         margin-top: 4px;
