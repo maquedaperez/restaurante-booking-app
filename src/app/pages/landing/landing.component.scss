@@ -141,8 +141,8 @@
 }
 
 .hero__cta {
-  padding: 14px 30px;
-  font-size: 0.95rem;
+  padding: 16px 36px;
+  font-size: 1.02rem;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
@@ -152,6 +152,8 @@
 }
 
 .hero__cta-secondary {
+  padding: 16px 36px;
+  font-size: 1.02rem;
   background: transparent;
   border: 1.5px solid rgba(255, 255, 255, 0.45);
   color: rgba(255, 255, 255, 0.85);
@@ -388,7 +390,11 @@
 
 .review-featured {
   max-width: 480px;
+  min-height: 130px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
 }
 
@@ -410,28 +416,6 @@
 .review-card__author {
   font-size: 0.82rem;
   font-weight: 600;
-}
-
-.review-dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.review-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: none;
-  padding: 0;
-  background: var(--color-border);
-  cursor: pointer;
-  transition: background var(--transition-fast);
-}
-
-.review-dot--active {
-  background: var(--color-primary);
 }
 
 .map-section {
@@ -535,8 +519,10 @@
     font-size: 1.05rem;
   }
 
-  .hero__cta {
-    padding: 13px 28px;
+  .hero__cta,
+  .hero__cta-secondary {
+    padding: 17px 38px;
+    font-size: 1.05rem;
   }
 
   .section {

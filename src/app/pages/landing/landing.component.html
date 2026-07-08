@@ -18,7 +18,7 @@
   </section>
 
   <section class="section section--alt">
-    <div class="review-featured">
+    <div class="review-featured" [@reviewFade]="reviewIndex">
       <div class="review-card__stars">
         <span class="material-icons-round" *ngFor="let i of [0, 1, 2, 3, 4]">
           {{ i < featuredOpinion.rating ? 'star' : 'star_border' }}
@@ -26,16 +26,6 @@
       </div>
       <p class="review-card__text">"{{ featuredOpinion.texto }}"</p>
       <span class="review-card__author">{{ featuredOpinion.autor }}</span>
-    </div>
-    <div class="review-dots">
-      <button
-        type="button"
-        class="review-dot"
-        *ngFor="let opinion of tenant.opiniones; let i = index"
-        [class.review-dot--active]="i === reviewIndex"
-        (click)="goToReview(i)"
-        [attr.aria-label]="'Ver opinión ' + (i + 1)"
-      ></button>
     </div>
   </section>
 
@@ -123,7 +113,6 @@
     <iframe
       class="contact-map"
       [src]="mapsEmbedUrl"
-      loading="lazy"
       referrerpolicy="no-referrer-when-downgrade"
       title="Mapa de ubicación"
     ></iframe>

@@ -1,5 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { TenantService } from '../../core/services/tenant.service';
@@ -11,7 +12,12 @@ const REVIEW_ROTATION_MS = 5000;
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './landing.component.html',
-  styleUrl: './landing.component.scss'
+  styleUrl: './landing.component.scss',
+  animations: [
+    trigger('reviewFade', [
+      transition('* => *', [style({ opacity: 0 }), animate('350ms ease', style({ opacity: 1 }))])
+    ])
+  ]
 })
 export class LandingComponent implements OnInit, OnDestroy {
   private tenantService = inject(TenantService);
@@ -84,10 +90,6 @@ export class LandingComponent implements OnInit, OnDestroy {
 
   nextReview(): void {
     this.reviewIndex = (this.reviewIndex + 1) % this.tenant.opiniones.length;
-  }
-
-  goToReview(index: number): void {
-    this.reviewIndex = index;
   }
 
   get mapsUrl(): string {
