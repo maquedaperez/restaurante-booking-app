@@ -390,10 +390,6 @@
   max-width: 480px;
   margin: 0 auto;
   text-align: center;
-  background: var(--color-bg-card);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-  padding: 18px 22px;
 }
 
 .review-card__stars {
@@ -502,10 +498,6 @@
 
   .section__header {
     margin-bottom: 14px;
-  }
-
-  .review-featured {
-    padding: 14px 18px;
   }
 
   .review-card__text {
