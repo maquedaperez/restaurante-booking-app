@@ -18,7 +18,7 @@
   </section>
 
   <section class="section section--alt">
-    <div class="review-featured" [@reviewFade]="reviewIndex">
+    <div class="review-featured">
       <div class="review-card__stars">
         <span class="material-icons-round" *ngFor="let i of [0, 1, 2, 3, 4]">
           {{ i < featuredOpinion.rating ? 'star' : 'star_border' }}
