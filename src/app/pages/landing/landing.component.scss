@@ -76,8 +76,8 @@
 .hero {
   display: flex;
   align-items: flex-end;
-  min-height: 27.7vh;
-  max-height: 266px;
+  min-height: 30.5vh;
+  max-height: 293px;
   background-color: var(--color-primary-dark);
   background-size: cover;
   background-position: center;
@@ -154,15 +154,15 @@
 .hero__cta-secondary {
   padding: 16px 36px;
   font-size: 1.02rem;
-  background: transparent;
-  border: 1.5px solid rgba(255, 255, 255, 0.45);
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 500;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  color: #fff;
+  font-weight: 600;
 }
 
 .hero__cta-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.28);
+  border-color: #fff;
 }
 
 .section {

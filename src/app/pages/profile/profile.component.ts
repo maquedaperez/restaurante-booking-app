@@ -148,6 +148,12 @@ import { formatDateShort } from '../../shared/utils/date-format';
         color: var(--color-text-secondary);
         margin: 12px 0 6px;
       }
+      .profile__section .form-control {
+        margin-bottom: 14px;
+      }
+      .profile__section .btn-block {
+        margin-top: 4px;
+      }
       .profile__saved {
         color: var(--color-success);
         font-size: 0.82rem;
