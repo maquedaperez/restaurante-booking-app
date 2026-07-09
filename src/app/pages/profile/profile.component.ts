@@ -154,13 +154,17 @@ import { formatDateShort } from '../../shared/utils/date-format';
         min-width: 0;
       }
       .profile__section input[type='date'].form-control {
-        padding: 10px 10px;
+        height: 46px;
+        padding: 0 10px;
         font-size: 0.85rem;
+        line-height: 46px;
       }
       @media (max-width: 380px) {
         .profile__section input[type='date'].form-control {
-          padding: 8px 6px;
+          height: 42px;
+          padding: 0 6px;
           font-size: 0.78rem;
+          line-height: 42px;
         }
       }
       .profile__section .btn-block {

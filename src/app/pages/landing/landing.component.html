@@ -17,18 +17,6 @@
     </div>
   </section>
 
-  <section class="section section--alt reviews-section">
-    <div class="review-featured">
-      <div class="review-card__stars">
-        <span class="material-icons-round" *ngFor="let i of [0, 1, 2, 3, 4]">
-          {{ i < featuredOpinion.rating ? 'star' : 'star_border' }}
-        </span>
-      </div>
-      <p class="review-card__text">"{{ featuredOpinion.texto }}"</p>
-      <span class="review-card__author">{{ featuredOpinion.autor }}</span>
-    </div>
-  </section>
-
   <section class="section">
     <div class="section__header">
       <h2>Platos destacados</h2>
@@ -106,6 +94,18 @@
         <p>{{ menu.descripcion }}</p>
         <span class="dish-card__price">{{ menu.precio.toFixed(2) }} €</span>
       </div>
+    </div>
+  </section>
+
+  <section class="section section--alt reviews-section">
+    <div class="review-featured">
+      <div class="review-card__stars">
+        <span class="material-icons-round" *ngFor="let i of [0, 1, 2, 3, 4]">
+          {{ i < featuredOpinion.rating ? 'star' : 'star_border' }}
+        </span>
+      </div>
+      <p class="review-card__text">"{{ featuredOpinion.texto }}"</p>
+      <span class="review-card__author">{{ featuredOpinion.autor }}</span>
     </div>
   </section>
 
