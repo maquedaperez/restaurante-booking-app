@@ -97,6 +97,15 @@
     </div>
   </section>
 
+  <section class="section map-section">
+    <iframe
+      class="contact-map"
+      [src]="mapsEmbedUrl"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Mapa de ubicación"
+    ></iframe>
+  </section>
+
   <section class="section section--alt reviews-section">
     <div class="review-featured">
       <div class="review-card__stars">
@@ -107,15 +116,6 @@
       <p class="review-card__text">"{{ featuredOpinion.texto }}"</p>
       <span class="review-card__author">{{ featuredOpinion.autor }}</span>
     </div>
-  </section>
-
-  <section class="section map-section">
-    <iframe
-      class="contact-map"
-      [src]="mapsEmbedUrl"
-      referrerpolicy="no-referrer-when-downgrade"
-      title="Mapa de ubicación"
-    ></iframe>
   </section>
 
   <section class="info-strip">
